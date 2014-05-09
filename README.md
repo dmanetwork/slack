@@ -55,3 +55,6 @@ If you do not change any of the other options you should see a message from Opti
 
 The method name is the final part of the API url specified in the Slack documentation. The argument array then would be an associative array where the keys are the names of the parameters as Slack says, with the values you want to send.
 
+# Copyright
+
+This software is Copyright (c) 2014 Dream Machine Association, LLC. See the bundled LICENSE file (BSD-2-Clause) for more information.
