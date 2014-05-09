@@ -1,0 +1,23 @@
+{
+	"name":"dmanetwork/slack",
+	"description":"An interface for interacting with Slack (slack.com). Their entire API is not yet implemented here, so far just sending messages to channels.",
+	"keywords":["php","slack"],
+	"license":"BSD-2-Clause",
+	"authors":[
+		{ "name":"Bob Majdak Jr",
+		  "email":"bob@dreamcars.com",
+		  "homepage":"http://dmanetwork.com",
+		  "role":"developer" }
+	],
+	"require":{
+		"php": ">=5.4.0",
+		"netherphp/object":"dev-master",
+		"netherphp/option":"dev-master"
+	},
+	"require-dev":{ },
+	"autoload":{
+		"psr-0": {
+			"DMA\\": "src/"
+		}
+	}
+}
