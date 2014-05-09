@@ -6,10 +6,10 @@ Small connection to Slack (slack.com) for sending messages to channels via their
 
 Use Composer.
 
-Currently depends on the development branch of Nether\Object and Nether\Option, so if you are installing this via Composer you will need to add the min-stability set to "dev" - that will soon change so that will not be needed. This package IS registered via Packagist.org.
+Currently depends on the development branch of Nether\Object and Nether\Option, so if you are installing this via Composer you will need to add the minimum-stability set to "dev" - that will soon change so that will not be needed. This package IS registered via Packagist.org.
 
 	{
-		"min-stability": "dev",
+		"minimum-stability": "dev",
 		"require": { "dmanetwork/slack": "dev-master" }
 	}
 
@@ -33,8 +33,10 @@ If you do not change any of the other options you should see a message from Opti
 
 ### More options at app config time...
 
+These are all the options available to set at application config time.
+
 	Nether\Option::Set([
-		'slack-token' => "YOUR-SLACK-TOKEN",
+		'slack-token' => 'YOUR-SLACK-TOKEN',
 		'slack-default-channel' => '#channel',
 		'slack-default-name' => 'bot name of choice',
 		'slack-default-icon' => 'url to public accessable image for chat icon'
@@ -42,11 +44,23 @@ If you do not change any of the other options you should see a message from Opti
 	
 ### More options at instance time (overwrites prev options)...
 
+These are all the options available to set at instance create time.
+
 	$slack = new DMA\Slack\Client([
 		'DefaultChannel' => '#channel',
 		'DefaultName' => 'bot name of choice',
 		'DefaultIcon' => 'url to icon',
 		'Token' => 'YOUR-SLACK-TOKEN'
+	]);
+	
+### More options at message send time...
+
+And these are all the options available to set at message send time.
+
+	$slack->SendToChannel('message here',[
+		'Channel' => '#DifferentChannel',
+		'Name' => 'Different Bot Name',
+		'Icon' => 'url to different icon'
 	]);
 
 ### Sending an API request we have not wrapped...
