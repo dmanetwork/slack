@@ -48,13 +48,28 @@ Nether\Option::Define([
 	will be printed in the app.
 	//*/
 
-	'slack-default-icon' => null
+	'slack-default-icon' => null,
 	/*//
 	@name slack-default-icon
 	@type string
 	@default null
 	if specified this should be the URL to a publically accessable image to use
 	as the user icon when sending messages to slack.
+	//*/
+
+	'slack-channels' => []
+	/*//
+	@name slack-channels
+	@type array[string]
+	@default array
+	an associative list of channels. use the key as the action or reason a
+	channel should be used, and the value the actual channel.
+
+	e.g. "user-add" => "#NewMemberAlerts"
+
+	then any time you SendToChannel with a channel value such as "--user-add"
+	this list will be searched and the channel or person you configured for that
+	action will be used.
 	//*/
 
 ]);
@@ -119,6 +134,26 @@ class Client {
 		->SetDefaultIcon($opt->DefaultIcon);
 
 		return;
+	}
+
+	////////////////
+	////////////////
+
+	public function GetChannelFromList($key) {
+	/*//
+	@argv string ChannelKey
+	@return string
+	fetch a channel by action key from the configuration. if the channel was
+	not found then the default channel is returned.
+	//*/
+
+		$channels = Nether\Option::Get('slack-channels');
+		if(array_key_exists($key,$channels)) {
+			return $channels[$key];
+		} else {
+			return $this->DefaultChannel;
+		}
+
 	}
 
 	////////////////
@@ -212,12 +247,32 @@ class Client {
 	////////////////
 	////////////////
 
-	public function SendToChannel($message,$opt=null) {
+	public function SendToChannel($channel,$message,$opt=null) {
+	/*//
+	@argv string Channel, string Message
+	@argv string Channel, string Message, object/array Options
+
+	send a message to a channel. the channel can be a #channel, a user, or
+	a defined --action channel.
+
+	* Channel => string
+	* Name => string
+	* Icon => string
+	//*/
+
+		$opt = new Nether\Object($opt,[
+			'Channel' => $channel
+		]);
+
+		return $this->Send($message,$opt);
+	}
+
+	public function Send($message,$opt=null) {
 	/*//
 	@argv string Message
 	@argv string Message, object/array Options
 
-	send a message to the channel. if options are not specified then all the
+	send a message. if options are not specified then all the
 	defaults that have been configured will be used. valid options to overwrite
 	the defaults for this request are:
 
@@ -231,6 +286,10 @@ class Client {
 			'Name'    => $this->DefaultName,
 			'Icon'    => $this->DefaultIcon
 		]);
+
+		if(preg_match('/^--(.+?)$/',$opt->Channel,$m)) {
+			$opt->Channel = $this->GetChannelFromList($m[1]);
+		}
 
 		return $this->SendRequest('chat.postMessage',[
 			'username' => $opt->Name,
