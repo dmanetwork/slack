@@ -25,7 +25,7 @@ Create an instance of the client to interact with the Slack API.
 	
 Then you can send messages.
 
-	$slack->SendToChannel('Hello from our Slack enabled app.');
+	$slack->Send('Hello from our Slack enabled app.');
 	
 If you do not change any of the other options you should see a message from Optimus Prime in your #general channel.
 	
@@ -39,7 +39,8 @@ These are all the options available to set at application config time.
 		'slack-token' => 'YOUR-SLACK-TOKEN',
 		'slack-default-channel' => '#channel',
 		'slack-default-name' => 'bot name of choice',
-		'slack-default-icon' => 'url to public accessable image for chat icon'
+		'slack-default-icon' => 'url to public accessable image for chat icon',
+		'slack-channels' => [ 'action-name' => 'channel', ... ]
 	]);
 	
 ### More options at instance time (overwrites prev options)...
@@ -57,11 +58,20 @@ These are all the options available to set at instance create time.
 
 And these are all the options available to set at message send time.
 
-	$slack->SendToChannel('message here',[
+	$slack->Send('message here',[
 		'Channel' => '#DifferentChannel',
 		'Name' => 'Different Bot Name',
 		'Icon' => 'url to different icon'
 	]);
+
+If all you want to do is send to a different channel or user than the default.
+
+	$slack->SendToChannel($chan,$msg);
+	
+Or send to a different channel as specified by any actions configured.
+
+	// send user-add action notifications to the team.
+	$slack->SendToChannel('--user-add',$msg);
 
 ### Sending an API request we have not wrapped...
 
