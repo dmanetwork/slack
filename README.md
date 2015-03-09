@@ -6,13 +6,6 @@ Small connection to Slack (slack.com) for sending messages to channels via their
 
 Use Composer.
 
-Currently depends on the development branch of Nether\Object and Nether\Option, so if you are installing this via Composer you will need to add the minimum-stability set to "dev" - that will soon change so that will not be needed. This package IS registered via Packagist.org.
-
-	{
-		"minimum-stability": "dev",
-		"require": { "dmanetwork/slack": "dev-master" }
-	}
-
 ## Simple Usage
 
 Define your Slack options early on with the rest of your application configuration. The only option you MUST specify is the API access token, which you can generate from http://api.slack.com while you are logged in there.
